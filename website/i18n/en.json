@@ -7,6 +7,9 @@
     "docs": {
       "getting-started": {
         "title": "Getting started"
+      },
+      "reference": {
+        "title": "Reference"
       }
     },
     "links": {
