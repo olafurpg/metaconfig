@@ -40,6 +40,21 @@ class Macros(val c: blackbox.Context) {
      """
   }
 
+  def deriveConfigurationImpl[T: c.WeakTypeTag](default: Tree): Tree = {
+    val T = assumeClass[T]
+    val surface = deriveSurfaceImpl[T]
+    q"""
+        lazy val tmp = $default
+        implicit lazy val surface: _root_.metaconfig.generic.Surface[$T] =
+          _root_.metaconfig.generic.deriveSurface[$T]
+        implicit lazy val settings: _root_.metaconfig.generic.Settings[$T] =
+          _root_.metaconfig.generic.Settings.FieldsToSettings[$T](surface)
+        implicit lazy val codec: _root_.metaconfig.ConfCodec[$T] =
+          _root_.metaconfig.generic.deriveCodec[$T](tmp)
+        _root_.metaconfig.Configuration.fromSurfaceCodec[$T](surface, codec)
+     """
+  }
+
   def deriveConfEncoderImpl[T: c.WeakTypeTag]: Tree = {
     val T = assumeClass[T]
     val params = this.params(T)

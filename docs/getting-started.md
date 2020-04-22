@@ -38,10 +38,21 @@ Next, write a case class for your user configuration.
 
 ```scala mdoc
 case class HelloConfig(
-  verbose: Boolean,
-  name: String
+  verbose: Boolean = false,
+  name: String = "Susan"
 )
 object HelloConfig {
-  implicit val config = metaconfig.generic.deriveConfiguration[HelloConfig](default)
+  implicit val config = metaconfig.generic.deriveConfiguration(HelloConfig())
 }
+```
+
+Next, parse HOCON into your case class
+
+```scala mdoc
+val hocon = """
+verbose = true
+name = John
+foo = bar
+"""
+metaconfig.Hocon.parseString[HelloConfig](hocon)(HelloConfig.config.withNoTypos)
 ```

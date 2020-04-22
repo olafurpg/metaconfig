@@ -184,5 +184,5 @@ lazy val docs = project
       baseDirectory.in(ThisBuild).value / "website" / "target" / "docs",
     mdocExtraArguments := List("--no-link-hygiene")
   )
-  .dependsOn(coreJVM, json)
+  .dependsOn(coreJVM, json, typesafe, sconfigJVM)
   .enablePlugins(DocusaurusPlugin)

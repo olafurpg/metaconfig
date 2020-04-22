@@ -10,6 +10,7 @@ import org.typelevel.paiges.Doc
 import metaconfig.annotation.Description
 import metaconfig.annotation.Usage
 import metaconfig.annotation.ExampleUsage
+import metaconfig.Configuration
 
 final class Settings[T](
     val settings: List[Setting],
@@ -104,6 +105,10 @@ final class Settings[T](
 object Settings {
   implicit def FieldsToSettings[T](implicit ev: Surface[T]): Settings[T] =
     apply(ev)
+  implicit def ConfigurationToSettings[T](
+      implicit ev: Configuration[T]
+  ): Settings[T] =
+    FieldsToSettings(ev.surface)
   def apply[T](implicit ev: Surface[T]): Settings[T] =
     new Settings[T](ev.fields.flatten.map(new Setting(_)), ev.annotations)
 }
