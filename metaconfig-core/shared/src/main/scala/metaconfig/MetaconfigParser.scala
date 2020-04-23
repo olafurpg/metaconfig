@@ -5,7 +5,7 @@ import java.nio.file.Path
 trait MetaconfigParser {
   def parseString[T: ConfDecoder](text: String): Configured[T] =
     parseInput(Input.String(text))
-  def parseString[T: ConfDecoder](
+  def parseFilename[T: ConfDecoder](
       filename: String,
       text: String
   ): Configured[T] =

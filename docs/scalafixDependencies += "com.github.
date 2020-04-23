@@ -1,3 +1,0 @@
-    scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.1.1",
-    OrganizeImports.groupedImports = Explode
-    OrganizeImports.expandRelative = true

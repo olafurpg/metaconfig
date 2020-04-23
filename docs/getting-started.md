@@ -49,10 +49,42 @@ object HelloConfig {
 Next, parse HOCON into your case class
 
 ```scala mdoc
-val hocon = """
-verbose = true
-name = John
-foo = bar
-"""
-metaconfig.Hocon.parseString[HelloConfig](hocon)(HelloConfig.config.withNoTypos)
+HelloConfig.config.parseString(
+  """
+  verbose = true
+  name = John
+  """,
+  metaconfig.Hocon
+).get
+```
+
+Use `parseCommandLine` to parse command-line arguments.
+
+```scala mdoc
+HelloConfig.config.parseCommandLine(
+  List("--verbose", "--name", "Amelie")
+).get
+HelloConfig.config.parseCommandLine(
+  List("--verbose", "--names", "Amelie")
+)
+```
+
+Use `.withNoTypos` to require that there are no unknown settings in the
+configuration.
+
+```scala mdoc
+HelloConfig.config.withNoTypos.parseString(
+  "verrbose = true",
+  metaconfig.Hocon
+)
+```
+
+Use `parseFilename` to include an optional filename in the error message.
+
+```scala mdoc
+HelloConfig.config.withNoTypos.parseFilename(
+  "hello.conf",
+  "verrbose = true",
+  metaconfig.Hocon
+)
 ```
